@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
         * {
             margin: 0;
             padding: 0;
@@ -29,23 +29,43 @@
             background-clip: text;
         }
 
-        .card-hover {
+        .product-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 162, 255, 0.15); 
+            border-color: rgba(0, 162, 255, 0.3);
+        }
+
+        .category-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .category-btn.active {
+            background: #00a2ff;
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 162, 255, 0.3);
+        }
+
+        .search-bar {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
 
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 162, 255, 0.15); 
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .accordion-content.active {
-            max-height: 1000px;
+        .search-bar:focus-within {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00a2ff;
+            box-shadow: 0 0 10px rgba(0, 162, 255, 0.1);
         }
 
         .mobile-menu {
@@ -93,6 +113,36 @@
             transform: translateY(-3px);
             background: #00a2ff !important;
             color: #ffffff !important;
+            border-color: #00a2ff !important;
+        }
+        
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .product-card {
+                margin: 0 auto;
+                max-width: 100%;
+            }
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-icon.rotate {
+            transform: rotate(180deg);
+        }
+
+        .glow-icon {
+            color: #00a2ff;
+            filter: drop-shadow(0 0 8px rgba(0, 162, 255, 0.6));
         }
     </style>
 </head>
@@ -161,16 +211,16 @@
 
             <div class="border-t border-white/10 pt-6">
                 <h3 class="text-sm font-bold mb-4 text-gray-400">SIGA-NOS</h3>
-                <div class="grid grid-cols-5 gap-3">
+               <div class="grid grid-cols-5 gap-3">
                     <a href="#" onclick="openDiscordModal(event)" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition">
                         <i class="fab fa-discord text-xl"></i>
                     </a>
                     <a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition">
-    <i class="fab fa-whatsapp text-xl"></i>
-</a>
-                    <a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 transition">
-    <i class="fab fa-instagram"></i>
-</a>
+                        <i class="fab fa-whatsapp text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
                     <a href="https://www.tiktok.com/@joaocamaraa?_r=1&_t=ZS-94FwFhMnD6q" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition">
                         <i class="fab fa-tiktok text-xl"></i>
                     </a>
@@ -187,10 +237,9 @@
             <div class="flex items-center justify-between gap-3 lg:gap-6">
 
               <div class="flex items-center gap-2 lg:gap-3 flex-shrink-0">
-                    <img src="./image/logo-alphacore.jpg" alt="ALPHA CORE Logo" class="w-12 h-12 lg:w-10 lg:h-10 object-cover rounded-xl border border-white/10 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.5)]">
+                    <img src="./image/logo-alphacore.jpg" alt="ALPHA CORE Logo" class="h-14 lg:h-16 w-auto object-contain">
                     <span class="text-lg lg:text-xl font-bold text-white">ALPHA CORE</span>
                 </div>
-
                 <div class="hidden lg:flex items-center gap-3">
                     <a href="#" onclick="openDiscordModal(event)" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 transition">
                         <i class="fab fa-discord"></i>
@@ -470,11 +519,9 @@
                     <i class="fas fa-shopping-cart text-[#00a2ff] mr-3"></i> ONDE OS AGENTES COMPRAM?
                 </h2>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="bg-white/5 rounded-xl border border-white/10 p-6 card-hover">
-                        <div class="text-2xl text-[#00a2ff] mb-3">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
+                        <img src="./image/weidian.png" alt="Weidian Logo" class="h-12 w-12 object-contain mb-4 rounded-xl bg-white p-1">
                         <h3 class="font-bold mb-2 text-white">Weidian (微店)</h3>
                         <p class="text-sm text-gray-300 mb-3">Tipo "Mercado Livre chinês"</p>
                         <ul class="text-xs text-gray-400 space-y-1">
@@ -485,9 +532,7 @@
                     </div>
 
                     <div class="bg-white/5 rounded-xl border border-white/10 p-6 card-hover">
-                        <div class="text-2xl text-[#00a2ff] mb-3">
-                            <i class="fas fa-store"></i>
-                        </div>
+                        <img src="./image/taobao.png" alt="Taobao Logo" class="h-12 w-12 object-contain mb-4 rounded-xl bg-white p-1">
                         <h3 class="font-bold mb-2 text-white">Taobao (淘宝)</h3>
                         <p class="text-sm text-gray-300 mb-3">Tipo "Amazon chinesa"</p>
                         <ul class="text-xs text-gray-400 space-y-1">
@@ -498,9 +543,7 @@
                     </div>
 
                     <div class="bg-white/5 rounded-xl border border-white/10 p-6 card-hover">
-                        <div class="text-2xl text-[#00a2ff] mb-3">
-                            <i class="fas fa-industry"></i>
-                        </div>
+                        <img src="./image/1688.png" alt="1688 Logo" class="h-12 w-12 object-contain mb-4 rounded-xl bg-white p-1">
                         <h3 class="font-bold mb-2 text-white">1688 (Alibaba atacado)</h3>
                         <p class="text-sm text-gray-300 mb-3"><span class="text-green-400 font-semibold">Preços de FÁBRICA</span></p>
                         <ul class="text-xs text-gray-400 space-y-1">
@@ -511,9 +554,7 @@
                     </div>
 
                     <div class="bg-white/5 rounded-xl border border-white/10 p-6 card-hover">
-                        <div class="text-2xl text-[#00a2ff] mb-3">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
+                        <img src="./image/xianyu.png" alt="Xianyu Logo" class="h-12 w-12 object-contain mb-4 rounded-xl bg-white p-1">
                         <h3 class="font-bold mb-2 text-white">Xianyu (闲鱼)</h3>
                         <p class="text-sm text-gray-300 mb-3">"OLX chinês" (usados)</p>
                         <ul class="text-xs text-gray-400 space-y-1">
@@ -523,7 +564,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
         </section>
 
         <section class="py-16 px-4">
@@ -632,7 +672,7 @@
                                 <ul class="space-y-1 text-gray-300">
                                     <li>• Preços mais altos</li>
                                     <li>• Menos variedade exclusiva</li>
-                                    <li>• Frete caro em items pesados</li>
+                                    
                                 </ul>
                             </div>
 
@@ -640,7 +680,7 @@
                                 <h4 class="font-bold mb-2 text-white">
                                     <i class="fas fa-user mr-2 text-[#00a2ff]"></i> Pra quem?
                                 </h4>
-                                <p class="text-gray-300">Iniciantes / quem quer comprar rápido sem declarar</p>
+                                <p class="text-gray-300">Iniciantes</p>
                             </div>
                         </div>
                     </div>
@@ -652,8 +692,8 @@
 
                         <div class="space-y-4">
                             <div>
-                                <h4 class="font-bold mb-2 text-white">Exemplos</h4>
-                                <p class="text-gray-300"><span class="text-[#00a2ff]">Hoobuy</span>, <span class="text-[#00a2ff]">Acbuy</span>, <span class="text-[#00a2ff]">Cssbuy</span></p>
+                                <h4 class="font-bold mb-2 text-white">Exemplo</h4>
+                                <p class="text-gray-300"><span class="text-[#00a2ff]">Hoobuy</span></p>
                             </div>
 
                             <div>
@@ -669,8 +709,8 @@
                             <div>
                                 <h4 class="font-bold mb-2 text-red-400">Desvantagens</h4>
                                 <ul class="space-y-1 text-gray-300">
-                                    <li>• Declaração manual</li>
-                                    <li>• Tempos variáveis</li>
+                                    <li>• Nenhuma</li>
+                                    <li> </li>
                                 </ul>
                             </div>
 
@@ -678,16 +718,16 @@
                                 <h4 class="font-bold mb-2 text-white">
                                     <i class="fas fa-user mr-2 text-[#00a2ff]"></i> Pra quem?
                                 </h4>
-                                <p class="text-gray-300">Avançados / quem quer variedade</p>
+                                <p class="text-gray-300">Importadores de todos os níveis (mesmo começando do zero)</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white/5 rounded-xl border border-white/10 p-6 text-center">
+               <div class="bg-white/5 rounded-xl border border-white/10 p-6 text-center">
                     <p class="text-lg text-gray-300">
-                        <strong>Marketplaces são ideais pra quem tá começando:</strong> só compra, espera e recebe.
-                        <strong class="text-[#00a2ff]">Agentes são pra quem quer economizar mais</strong> e acessar o que não tem no AliExpress/Shopee (ex: items usados Xianyu, streetwear Yupoo).
+                        <strong>Marketplaces comuns te fazem pagar mais caro:</strong> você compra de intermediários e fica limitado ao que todo mundo já tem.
+                        <strong class="text-[#00a2ff]">Agentes te dão acesso direto ao mercado chinês:</strong> itens mais baratos direto da fábrica, mais variedades e produtos que não tem no AliExpress/Shopee (ex: fábrica no 1688, variedade no Taobao, itens usados no Xianyu e streetwear no Yupoo).
                     </p>
                 </div>
             </div>
