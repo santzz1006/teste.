@@ -542,28 +542,9 @@
             </div>
         </div>
     </footer>
-
+<script src="navegacao.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    // 1. Pega o nome do arquivo atual (ex: aviso-geral.html)
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
-    const navLinks = document.querySelectorAll(".nav-link");
-
-    navLinks.forEach(link => {
-        const pageTarget = link.getAttribute("data-page");
-
-        // 2. Se o botão for o da página atual, aplica o efeito Neon
-        if (currentPage === pageTarget) {
-            link.className = "nav-link px-6 py-2.5 rounded-xl text-[11px] font-black uppercase bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.15)] transition";
-        } 
-        // 3. Caso especial para a FAQ que fica dentro de fornecedores
-        else if (window.location.hash === "#faq-alfandega" && pageTarget === "faq") {
-             link.className = "nav-link px-6 py-2.5 rounded-xl text-[11px] font-black uppercase bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.15)] transition";
-             // Remove o destaque do botão "Fornecedores" comum se estiver na FAQ
-             document.querySelector('[data-page="fornecedores.html"]').className = "nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition";
-        }
-    });
-});
+      
         // Função Mobile Menu
         function openMobileMenu() {
             document.getElementById('mobileMenu').classList.add('active');

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsenal Alpha - Seleção de Módulos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        
+        :root {
+            --alpha-blue: #00a2ff;
+            --card-bg: #0d0d0d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Grid de Ferramentas */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+        }
+
+        /* ESTA PARTE RESOLVE A TREMEDEIRA (ANTI-JITTER) */
+        .alpha-tool-card {
+            position: relative;
+            height: 420px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: absolute;
+            inset: 0;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            transform: translateZ(0); /* Aceleração de Hardware */
+            will-change: transform, border-color, box-shadow;
+        }
+
+        /* O hover é detectado no card pai (que está parado), 
+           mas o efeito acontece no filho (que se move) */
+        .alpha-tool-card:hover .card-inner {
+            transform: translateY(-15px);
+            border-color: rgba(0, 162, 255, 0.4);
+            background: #111111;
+            box-shadow: 
+                0 30px 60px -12px rgba(0, 0, 0, 0.8),
+                0 0 20px rgba(0, 162, 255, 0.1);
+        }
+
+        /* Estilo do Ícone Alpha */
+        .icon-box {
+            width: 72px;
+            height: 72px;
+            background: rgba(0, 162, 255, 0.08);
+            border: 1px solid rgba(0, 162, 255, 0.15);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            color: var(--alpha-blue);
+            font-size: 28px;
+            transition: all 0.4s ease;
+        }
+
+        .alpha-tool-card:hover .icon-box {
+            background: var(--alpha-blue);
+            color: white;
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 0 25px rgba(0, 162, 255, 0.4);
+        }
+
+        /* Tipografia */
+        .tool-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .tool-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .alpha-tool-card:hover .tool-desc {
+            color: #999;
+        }
+
+        /* Botão Tático */
+        .btn-alpha {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 11px;
+            color: #666;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .alpha-tool-card:hover .btn-alpha {
+            background: var(--alpha-blue);
+            border-color: var(--alpha-blue);
+            color: white;
+            box-shadow: 0 10px 20px rgba(0, 162, 255, 0.2);
+        }
+
+        /* Badge Superior */
+        .badge-alpha {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 162, 255, 0.1);
+            border: 1px solid rgba(0, 162, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-20">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-20">
+            <div class="badge-alpha">
+                <i class="fas fa-terminal text-[#00a2ff] text-[10px]"></i>
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[#00a2ff]">System Terminal v2.0</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">
+                Arsenal <span class="text-[#00a2ff]">Alpha</span>
+            </h1>
+            <p class="text-gray-500 max-w-2xl mx-auto text-lg font-medium">
+                Módulos de alta precisão para otimização de importações. Selecione uma ferramenta para iniciar.
+            </p>
+        </div>
+
+        <div class="tool-grid">
+            
+            <div class="alpha-tool-card" onclick="testeLoad('calculadora')">
+                <div class="card-inner">
+                    <div>
+                        <div class="icon-box"><i class="fas fa-calculator"></i></div>
+                        <h3 class="tool-title">Calculadora</h3>
+                        <p class="tool-desc">Cálculo preciso de frete, taxas de serviço e custo final por KG.</p>
+                    </div>
+                    <button class="btn-alpha">Acessar Módulo <i class="fas fa-chevron-right text-[10px]"></i></button>
+                </div>
+            </div>
+
+            <div class="alpha-tool-card" onclick="testeLoad('conversor')">
+                <div class="card-inner">
+                    <div>
+                        <div class="icon-box"><i class="fas fa-exchange-alt"></i></div>
+                        <h3 class="tool-title">Moedas</h3>
+                        <p class="tool-desc">Conversão direta de Yuan e Dólar com spread de agentes atualizado.</p>
+                    </div>
+                    <button class="btn-alpha">Acessar Módulo <i class="fas fa-chevron-right text-[10px]"></i></button>
+                </div>
+            </div>
+
+            <div class="alpha-tool-card" onclick="testeLoad('impostos')">
+                <div class="card-inner">
+                    <div>
+                        <div class="icon-box"><i class="fas fa-file-invoice-dollar"></i></div>
+                        <h3 class="tool-title">Tributos</h3>
+                        <p class="tool-desc">Simulador de ICMS e Imposto de Importação sob novas regras.</p>
+                    </div>
+                    <button class="btn-alpha">Acessar Módulo <i class="fas fa-chevron-right text-[10px]"></i></button>
+                </div>
+            </div>
+
+            <div class="alpha-tool-card" onclick="testeLoad('guia-tamanhos')">
+                <div class="card-inner">
+                    <div>
+                        <div class="icon-box"><i class="fas fa-ruler-combined"></i></div>
+                        <h3 class="tool-title">Tamanhos</h3>
+                        <p class="tool-desc">Conversão de medidas asiáticas para o padrão de vestuário BR.</p>
+                    </div>
+                    <button class="btn-alpha">Acessar Módulo <i class="fas fa-chevron-right text-[10px]"></i></button>
+                </div>
+            </div>
+
+            <div class="alpha-tool-card" onclick="testeLoad('checklist-qc')">
+                <div class="card-inner">
+                    <div>
+                        <div class="icon-box"><i class="fas fa-check-double"></i></div>
+                        <h3 class="tool-title">Quality Check</h3>
+                        <p class="tool-desc">Checklist tático para inspeção de fotos direto do warehouse.</p>
+                    </div>
+                    <button class="btn-alpha">Acessar Módulo <i class="fas fa-chevron-right text-[10px]"></i></button>
+                </div>
+            </div>
+
+            <div class="alpha-tool-card" onclick="testeLoad('timeline-importacao')">
+                <div class="card-inner">
+                    <div>
+                        <div class="icon-box"><i class="fas fa-route"></i></div>
+                        <h3 class="tool-title">Logística</h3>
+                        <p class="tool-desc">Timeline visual do trajeto da carga até o destino final.</p>
+                    </div>
+                    <button class="btn-alpha">Acessar Módulo <i class="fas fa-chevron-right text-[10px]"></i></button>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="displayArea" class="mt-32 p-12 border border-white/10 rounded-[40px] bg-[#080808] hidden">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2 h-2 bg-[#00a2ff] rounded-full animate-pulse"></div>
+                <h2 id="toolTitle" class="text-2xl font-black uppercase tracking-widest text-white"></h2>
+            </div>
+            <div class="h-64 border border-dashed border-white/10 rounded-3xl flex items-center justify-center text-gray-600 font-bold uppercase tracking-widest text-sm">
+                Interface do Módulo Carregada
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testeLoad(id) {
+            const display = document.getElementById('displayArea');
+            const title = document.getElementById('toolTitle');
+            
+            display.classList.remove('hidden');
+            title.innerText = id.replace('-', ' ');
+            
+            display.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>
