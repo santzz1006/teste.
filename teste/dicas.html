@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPHA CORE - Dicas de Importação</title>
+    <link rel="icon" type="image/jpg" href="./image/logo-alphacore.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050505;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #00a2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 162, 255, 0.1); 
+        }
+
+        .category-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 320px;
+            height: 100vh;
+            background: rgba(5, 5, 5, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transition: right 0.3s ease;
+            z-index: 9999;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9998;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Alpha Core Glowing Icon */
+        .glow-icon {
+            color: #00a2ff;
+            filter: drop-shadow(0 0 8px rgba(0, 162, 255, 0.6));
+        }
+
+        .social-link {
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+
+<body class="text-white">
+
+    <div id="discordModalOverlay" class="fixed inset-0 bg-black/80 z-[10000] hidden opacity-0 transition-opacity duration-300 flex items-center justify-center px-4" onclick="if(event.target === this) closeDiscordModal()">
+        <div id="discordModal" class="bg-[#050505] border border-[#00a2ff]/30 rounded-2xl p-8 max-w-md w-full transform scale-95 transition-transform duration-300 relative shadow-[0_0_40px_rgba(0,162,255,0.2)] text-center">
+            
+            <button onclick="closeDiscordModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="w-16 h-16 bg-[#00a2ff]/10 rounded-full flex items-center justify-center mx-auto mb-5 border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.2)]">
+                <i class="fas fa-tools text-2xl text-[#00a2ff]"></i>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-white mb-3">Servidor em Manutenção</h3>
+            <p class="text-gray-400 mb-8 text-sm leading-relaxed">
+                Estamos preparando um espaço incrível e cheio de novidades para a comunidade ALPHA CORE. O nosso servidor no Discord estará disponível muito em breve!
+            </p>
+            
+            <button onclick="closeDiscordModal()" class="w-full bg-[#00a2ff] text-white py-3 rounded-lg font-bold hover:bg-[#0088cc] transition shadow-[0_0_15px_rgba(0,162,255,0.3)]">
+                Entendi
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold">Menu</h2>
+                <button onclick="closeMobileMenu()" class="w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="space-y-2 mb-6">
+                <nav id="main-nav" class="flex gap-4 py-3 scrollbar-hide overflow-x-auto items-center">
+    <button onclick="window.location.href='index.html'" data-page="index.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Início</button>
+    
+    <button onclick="window.location.href='fornecedores.html'" data-page="fornecedores.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Fornecedores</button>
+    
+    <button onclick="window.location.href='fornecedores.html#faq-alfandega'" data-page="faq" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">FAQ Alfândega</button>
+    
+    <button onclick="window.location.href='fretes.html'" data-page="fretes.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Guia Fretes</button>
+    
+    <button onclick="window.location.href='dicas.html'" data-page="dicas.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Dicas</button>
+    
+    <button onclick="window.location.href='ferramentas1.html'" data-page="ferramentas1.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Ferramentas</button>
+    
+    <button onclick="window.location.href='atualizacoes.html'" data-page="atualizacoes.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Atualizações</button>
+    
+    <button onclick="window.location.href='anti-golpe.html'" data-page="anti-golpe.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Anti-Golpe</button>
+    
+    <button onclick="window.location.href='aviso-geral.html'" data-page="aviso-geral.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Aviso Legal</button>
+</nav>
+            </div>
+
+            <div class="border-t border-white/10 pt-6">
+              <h3 class="text-sm font-bold mb-4 text-gray-400 tracking-wider">SIGA-NOS</h3>
+<div class="grid grid-cols-5 gap-3">
+    <a href="#" onclick="openDiscordModal(event)" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-discord text-xl"></i>
+    </a>
+    
+    <a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-whatsapp text-xl"></i>
+    </a>
+    
+    <a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-instagram text-xl"></i>
+    </a>
+    
+    <a href="https://www.tiktok.com/@joaocamaraa?_r=1&_t=ZS-94FwFhMnD6q" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-tiktok text-xl"></i>
+    </a>
+    
+    <a href="https://youtube.com/@joaocamaraa?feature=shared" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-youtube text-xl"></i>
+    </a>
+</div>
+            </div>
+        </div>
+    </div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/90 border-b border-white/10">
+        <div class="container mx-auto px-4 py-3 lg:py-4">
+            <div class="flex items-center justify-between gap-3 lg:gap-6">
+
+                <a href="../" class="flex items-center gap-3 hover:opacity-90 transition flex-shrink-0">
+                    <img src="./image/logo-alphacore.jpg" alt="Alpha Core Logo" class="h-10 w-auto object-contain">
+                    <span class="text-xl lg:text-2xl font-bold text-white tracking-wider">ALPHA CORE</span>
+                </a>
+
+                <div class="hidden lg:flex items-center gap-3">
+    <a href="#" onclick="openDiscordModal(event)" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-discord"></i>
+    </a>
+    
+    <a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    
+    <a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-instagram"></i>
+    </a>
+    
+    <a href="https://www.tiktok.com/@joaocamaraa?_r=1&_t=ZS-94FwFhMnD6q" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-tiktok"></i>
+    </a>
+    
+    <a href="https://youtube.com/@joaocamaraa?feature=shared" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:bg-[#00a2ff] hover:border-[#00a2ff] hover:text-white hover:shadow-[0_0_15px_rgba(0,162,255,0.4)] transition-all duration-300">
+        <i class="fab fa-youtube"></i>
+    </a>
+</div>
+
+                <button onclick="openMobileMenu()" class="lg:hidden p-2 rounded-lg bg-white/5 border border-white/10 flex-shrink-0 hover:bg-white/10 transition">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="hidden lg:block border-t border-white/5">
+            <div class="container mx-auto px-4 relative z-40">
+                <nav class="flex gap-1 py-2 scrollbar-hide relative" style="overflow: visible !important;">
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../index.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            Início
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../fornecedores.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            Fornecedores
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../fornecedores.html#faq-alfandega'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            FAQ Alfândega
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../fretes.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            Guia de Fretes
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../dicas.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_10px_rgba(0,162,255,0.1)]">
+                            Dicas
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../ferramentas1.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            Ferramentas
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../atualizacoes.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            Atualizações
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../anti-golpe.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            Guia Anti-Golpe
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../aviso-legal.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-300 hover:text-white">
+                            Aviso Legal
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 lg:pt-40 px-4 pb-16">
+        <div class="container mx-auto max-w-5xl">
+            
+            <div class="text-center mb-12">
+                <h1 class="text-4xl lg:text-5xl font-black mb-4 tracking-tight">
+                    Dicas e Estratégias <span class="text-[#00a2ff]">Alpha</span>
+                </h1>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Guias práticos de elite para economizar, evitar problemas na alfândega e aproveitar ao máximo suas importações diretas.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+
+                <div class="bg-[#111] rounded-2xl border border-white/10 p-6 lg:p-8 card-hover hover:border-[#00a2ff]/50">
+                    <div class="flex flex-col lg:flex-row gap-6 items-start">
+                        <div class="w-14 h-14 bg-black border border-[#00a2ff]/30 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner">
+                            <i class="fas fa-search text-[#00a2ff] text-2xl"></i>
+                        </div>
+                        <div class="flex-1 w-full">
+                            <h3 class="font-bold text-xl lg:text-2xl mb-3 text-white">Como Saber se um Fornecedor é Confiável</h3>
+                            <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                                Analise estes 4 critérios essenciais nas plataformas (Weidian, Taobao, 1688) antes de colocar itens no carrinho:
+                            </p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-[#1a1a1a] rounded-xl p-4 border border-white/5 hover:border-white/10 transition">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <i class="fas fa-calendar-alt text-[#00a2ff]"></i>
+                                        <h4 class="font-bold text-white text-sm">Tempo no Mercado</h4>
+                                    </div>
+                                    <ul class="text-xs text-gray-400 space-y-2">
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Excelente:</strong> 5+ anos</li>
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Bom:</strong> 3-5 anos</li>
+                                        <li><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i> <strong class="text-gray-300">Cuidado:</strong> 1-3 anos</li>
+                                        <li><i class="fas fa-times-circle text-red-500 mr-2"></i> <strong class="text-gray-300">Evitar:</strong> Menos de 1 ano</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-[#1a1a1a] rounded-xl p-4 border border-white/5 hover:border-white/10 transition">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <i class="fas fa-shopping-cart text-[#00a2ff]"></i>
+                                        <h4 class="font-bold text-white text-sm">Volume de Vendas</h4>
+                                    </div>
+                                    <ul class="text-xs text-gray-400 space-y-2">
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Excelente:</strong> 10.000+ vendas</li>
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Bom:</strong> 5.000-10.000 vendas</li>
+                                        <li><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i> <strong class="text-gray-300">Médio:</strong> 1.000-5.000 vendas</li>
+                                        <li><i class="fas fa-times-circle text-red-500 mr-2"></i> <strong class="text-gray-300">Baixo:</strong> Menos de 1.000 vendas</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-[#1a1a1a] rounded-xl p-4 border border-white/5 hover:border-white/10 transition">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <i class="fas fa-star text-[#00a2ff]"></i>
+                                        <h4 class="font-bold text-white text-sm">% Avaliações Positivas</h4>
+                                    </div>
+                                    <ul class="text-xs text-gray-400 space-y-2">
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Excelente:</strong> 97%+ positivo</li>
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Bom:</strong> 95-97% positivo</li>
+                                        <li><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i> <strong class="text-gray-300">Atenção:</strong> 90-95% positivo</li>
+                                        <li><i class="fas fa-times-circle text-red-500 mr-2"></i> <strong class="text-gray-300">Evitar:</strong> Menos de 90% positivo</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-[#1a1a1a] rounded-xl p-4 border border-white/5 hover:border-white/10 transition">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <i class="fas fa-trophy text-[#00a2ff]"></i>
+                                        <h4 class="font-bold text-white text-sm">Nível da Loja (Taobao/1688)</h4>
+                                    </div>
+                                    <ul class="text-xs text-gray-400 space-y-2">
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Top:</strong> Coroa (Crown) / Gold Supplier</li>
+                                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i> <strong class="text-gray-300">Bom:</strong> 5+ Diamantes</li>
+                                        <li><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i> <strong class="text-gray-300">Médio:</strong> 3 a 5 Corações</li>
+                                        <li><i class="fas fa-times-circle text-red-500 mr-2"></i> <strong class="text-gray-300">Novo:</strong> Abaixo de 3 Corações</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#1a1a1a] rounded-xl p-5 border border-white/5 mt-4">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <i class="fas fa-comments text-indigo-400"></i>
+                                    <h4 class="font-bold text-white text-sm">Comentários de Compradores (Reviews)</h4>
+                                </div>
+                                <div class="space-y-3 text-sm text-gray-400">
+                                    <div class="flex items-start gap-3">
+                                        <i class="fas fa-check text-green-500 mt-1"></i>
+                                        <div>
+                                            <strong class="text-white">Procure por:</strong> Comentários detalhados (com fotos reais do produto recebido), menção à qualidade do tecido/material, e relatos de entrega rápida para a warehouse.
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <i class="fas fa-times text-red-500 mt-1"></i>
+                                        <div>
+                                            <strong class="text-white">Desconfie de:</strong> Comentários genéricos (ex: "muito bom" sem contexto), muitas reclamações de B&S (Bait and Switch - mandar item diferente da foto) e ausência de imagens de clientes.
+                                        </div>
+                                    </div>
+                                    <div class="bg-indigo-900/20 border border-indigo-500/20 rounded-lg p-3 mt-3 flex items-center gap-3">
+                                        <i class="fas fa-lightbulb text-indigo-400"></i>
+                                        <span class="text-xs"><strong class="text-indigo-300">Dica Avançada:</strong> Verifique os comentários dos últimos 3 meses. Lojas mudam de dono ou de fábrica, avaliações de 2 anos atrás não garantem qualidade atual.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#111] rounded-2xl border border-white/10 p-6 lg:p-8 card-hover hover:border-[#00a2ff]/50">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/5">
+                            <i class="fas fa-handshake text-[#00a2ff] text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-3 text-white">Negociação de Preços e Cupons no Agente</h3>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                Plataformas de agentes geralmente possuem sistemas internos de cupons e descontos de frete. Além disso, se você for fazer um pedido grande (acima de 10 unidades do mesmo item no 1688, por exemplo), você pode pedir para o agente entrar em contato com o vendedor para negociar um abatimento no preço final.
+                            </p>
+                            <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 text-xs text-gray-400 flex items-center gap-3">
+                                <i class="fas fa-tag text-green-500 text-base"></i> 
+                                <span><strong class="text-white">Regra de Ouro:</strong> Sempre verifique a aba "Coupons" no seu perfil da Hoobuy antes de fechar o envio internacional. Feriados chineses costumam liberar frete com 10-20% OFF.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#111] rounded-2xl border border-white/10 p-6 lg:p-8 card-hover hover:border-[#00a2ff]/50">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/5">
+                            <i class="fas fa-box-open text-[#00a2ff] text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-3 text-white">Embalagem e Envio Inteligente (Rehearsal)</h3>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                O frete internacional é cobrado por Peso Real ou Peso Volumétrico (o que for maior). Caixas de sapato ocupam um espaço absurdo. Use a opção de <strong>"Drop Shoebox"</strong> (remover caixa do sapato) e <strong>"Vacuum Packaging"</strong> (embalagem a vácuo para roupas) para derrubar o custo do frete.
+                            </p>
+                            <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 text-xs text-gray-400 flex items-center gap-3">
+                                <i class="fas fa-compress-arrows-alt text-purple-400 text-base"></i> 
+                                <span><strong class="text-white">Economia Real:</strong> Remover 2 caixas de tênis pode reduzir o peso volumétrico em mais de 1KG, economizando cerca de R$ 100 no frete final.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#111] rounded-2xl border border-white/10 p-6 lg:p-8 card-hover hover:border-[#00a2ff]/50">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/5">
+                            <i class="fas fa-camera-retro text-[#00a2ff] text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-3 text-white">Quality Control (QC) Essencial</h3>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                O Agente serve justamente para proteger seu dinheiro. Quando o produto chega na warehouse (armazém) deles na China, eles tiram de 3 a 5 fotos gratuitas. <strong>Nunca envie um produto para o Brasil sem analisar as fotos minuciosamente.</strong> Se houver defeitos de costura, manchas ou for o tamanho errado, você tem 5 dias para pedir troca/reembolso enquanto o item ainda está na China.
+                            </p>
+                            <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 text-xs text-gray-400 flex items-center gap-3">
+                                <i class="fas fa-search-plus text-yellow-500 text-base"></i> 
+                                <span><strong class="text-white">Dica Extra:</strong> Para itens muito caros (ex: eletrônicos, jaquetas de couro), pague $0.50 cents a mais para solicitar "Detailed Photos" (fotos extras detalhadas da etiqueta e medição com fita métrica).</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#111] rounded-2xl border border-white/10 p-6 lg:p-8 card-hover hover:border-[#00a2ff]/50">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/5">
+                            <i class="fas fa-calendar-check text-[#00a2ff] text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-xl mb-3 text-white">Melhores Épocas para Comprar</h3>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                O comércio chinês paralisa completamente durante o <strong>Ano Novo Chinês (CNY)</strong>, que ocorre entre o final de Janeiro e início de Fevereiro. Evite fazer pedidos nessa época, pois os vendedores não enviam e os armazéns não processam os pacotes. As melhores promoções ocorrem no <strong>11.11 (Singles Day)</strong> e nas viradas de estação.
+                            </p>
+                            <div class="bg-[#0a0a0a] border border-white/5 rounded-lg p-3 text-xs text-gray-400 flex items-center gap-3">
+                                <i class="fas fa-plane-departure text-green-400 text-base"></i> 
+                                <span><strong class="text-white">Planejamento:</strong> Se planeja importar para vender no Natal do Brasil, suas compras devem ser feitas e despachadas da China no máximo até o final de Outubro para evitar a superlotação de fim de ano.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-12 bg-gradient-to-r from-[#00a2ff]/10 to-transparent rounded-2xl border border-[#00a2ff]/20 p-8 text-center relative overflow-hidden shadow-[0_0_20px_rgba(0,162,255,0.05)]">
+                <div class="flex items-center justify-center gap-4 mb-6 relative z-10">
+                    <div class="w-14 h-14 bg-black border border-[#00a2ff]/30 rounded-xl flex items-center justify-center shadow-inner">
+                        <i class="fas fa-users text-[#00a2ff] text-2xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <h2 class="text-2xl font-bold text-white">Ficou com alguma dúvida?</h2>
+                        <p class="text-sm text-gray-400">Junte-se ao nosso esquadrão no Discord e pergunte aos especialistas.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+                    <a href="#" onclick="openDiscordModal(event)" class="inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-[#00a2ff] text-white hover:bg-[#0088cc] rounded-xl font-bold text-sm lg:text-base transition shadow-[0_0_15px_rgba(0,162,255,0.3)]">
+                        <i class="fab fa-discord text-xl"></i>
+                        Acessar Discord
+                    </a>
+                    <a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/30 border border-[#25D366]/30 rounded-xl font-bold text-sm lg:text-base transition">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        Grupo WhatsApp
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <footer class="bg-black border-t border-white/10">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Links Rápidos</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="../fornecedores" class="hover:text-[#00a2ff] transition">Fornecedores</a></li>
+                        <li><a href="../fretes" class="hover:text-[#00a2ff] transition">Guia de Fretes</a></li>
+                        <li><a href="../dicas" class="text-[#00a2ff] font-semibold">Dicas</a></li>
+                        <li><a href="../atualizacoes" class="hover:text-[#00a2ff] transition">Atualizações</a></li>
+                        <li><a href="../anti-golpe" class="hover:text-[#00a2ff] transition">Guia Anti-Golpe</a></li>
+                        <li><a href="../aviso-legal" class="hover:text-[#00a2ff] transition">Aviso Legal</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Plataformas</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="https://hoobuy.com?utm_source=website&utm_medium=ambassador&utm_campaign=linksharing&inviteCode=AXn3n7JE" target="_blank" class="hover:text-[#00a2ff] transition">Hoobuy</a></li>
+                        <li><a href="https://www.taobao.com" target="_blank" class="hover:text-[#00a2ff] transition">Taobao</a></li>
+                        <li><a href="https://www.1688.com" target="_blank" class="hover:text-[#00a2ff] transition">1688</a></li>
+                        <li><a href="https://www.xianyu.com" target="_blank" class="hover:text-[#00a2ff] transition">Xianyu</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Contato</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" onclick="openDiscordModal(event)" class="hover:text-[#00a2ff] transition">Discord</a></li>
+                        <li><a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="hover:text-[#00a2ff] transition">WhatsApp</a></li>
+                        <li><a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="hover:text-[#00a2ff] transition">Instagram</a></li>
+                        <li><a href="https://www.tiktok.com/@joaocamaraa?_r=1&_t=ZS-94FwFhMnD6q" target="_blank" class="hover:text-[#00a2ff] transition">TikTok</a></li>
+                        <li><a href="https://youtube.com/@joaocamaraa?feature=shared" target="_blank" class="hover:text-[#00a2ff] transition">YouTube</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Legal</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="../aviso-legal" class="hover:text-[#00a2ff] transition">Aviso Legal</a></li>
+                        <li><a href="../aviso-legal" class="hover:text-[#00a2ff] transition">Isenção de Responsabilidade</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-12 pt-8 text-center text-sm text-gray-500">
+                <p class="mb-2">&copy; 2026 ALPHA CORE. Todos os direitos reservados.</p>
+                <p class="text-xs text-gray-600 italic">Guia informativo independente. Responsabilidade exclusiva do usuário. Consulte leis e profissionais.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    // 1. Pega o nome do arquivo atual (ex: aviso-geral.html)
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(link => {
+        const pageTarget = link.getAttribute("data-page");
+
+        // 2. Se o botão for o da página atual, aplica o efeito Neon
+        if (currentPage === pageTarget) {
+            link.className = "nav-link px-6 py-2.5 rounded-xl text-[11px] font-black uppercase bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.15)] transition";
+        } 
+        // 3. Caso especial para a FAQ que fica dentro de fornecedores
+        else if (window.location.hash === "#faq-alfandega" && pageTarget === "faq") {
+             link.className = "nav-link px-6 py-2.5 rounded-xl text-[11px] font-black uppercase bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.15)] transition";
+             // Remove o destaque do botão "Fornecedores" comum se estiver na FAQ
+             document.querySelector('[data-page="fornecedores.html"]').className = "nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition";
+        }
+    });
+});
+        // Função Mobile Menu
+        function openMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+            document.getElementById('mobileOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+            document.getElementById('mobileOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Funções Discord Modal
+        function openDiscordModal(e) {
+            if(e) e.preventDefault();
+            const overlay = document.getElementById('discordModalOverlay');
+            const modal = document.getElementById('discordModal');
+            
+            overlay.classList.remove('hidden');
+            void overlay.offsetWidth; 
+            
+            overlay.classList.remove('opacity-0');
+            modal.classList.remove('scale-95');
+            modal.classList.add('scale-100');
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDiscordModal() {
+            const overlay = document.getElementById('discordModalOverlay');
+            const modal = document.getElementById('discordModal');
+            
+            overlay.classList.add('opacity-0');
+            modal.classList.remove('scale-100');
+            modal.classList.add('scale-95');
+            
+            document.body.style.overflow = '';
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+
+    <script>
+        window.va = window.va || function() {
+            (window.vaq = window.vaq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+</body>
+</html>

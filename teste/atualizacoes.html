@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar de Atualizações - Alpha Core</title>
+    <link rel="icon" type="image/png" href="./image/logo-alphacore.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        :root {
+            --alpha-blue: #00a2ff;
+            --alpha-bg: #050505;
+            --card-bg: #0d0d0d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--alpha-bg);
+            color: white;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Scrollbar Customizada --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00a2ff;
+        }
+
+        /* --- Esconder scrollbar em menus --- */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* --- Botoes de Navegação Superior --- */
+        .category-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .category-btn button {
+            color: #888;
+        }
+        .category-btn:hover button {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .category-btn button.active-nav {
+            color: var(--alpha-blue);
+            background: rgba(0, 162, 255, 0.1);
+            font-weight: 800;
+            border: 1px solid rgba(0, 162, 255, 0.2);
+        }
+
+        /* --- Botoes de Filtro (Todas, Site, Noticias) --- */
+        .filter-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #666;
+            cursor: pointer;
+        }
+        .filter-btn:hover {
+            background: #1a1a1a;
+            color: white;
+        }
+        .filter-btn.active-filter {
+            background: var(--alpha-blue);
+            color: white;
+            border-color: var(--alpha-blue);
+            box-shadow: 0 0 20px rgba(0, 162, 255, 0.3);
+        }
+
+        /* ======================================================================== */
+        /* CARDS DE ATUALIZAÇÃO: TECNOLOGIA ANTI-TREMEDEIRA (OUTER SHELL)           */
+        /* ======================================================================== */
+        .alpha-update-card {
+            position: relative;
+            perspective: 1000px;
+            cursor: default;
+            width: 100%;
+        }
+
+        .update-inner {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 24px 32px;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            transform: translateZ(0); /* Aceleração de Hardware para animação lisa */
+            backface-visibility: hidden;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efeito de Subida e Luz no Hover */
+        .alpha-update-card:hover .update-inner {
+            transform: translateY(-5px);
+            background: #111;
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Brilhos Dinâmicos Específicos por Categoria */
+        .alpha-update-card.glow-blue:hover .update-inner { border-color: rgba(0, 162, 255, 0.4); box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 162, 255, 0.1); }
+        .alpha-update-card.glow-red:hover .update-inner { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(239, 68, 68, 0.1); }
+        .alpha-update-card.glow-green:hover .update-inner { border-color: rgba(34, 197, 94, 0.4); box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(34, 197, 94, 0.1); }
+        .alpha-update-card.glow-purple:hover .update-inner { border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(168, 85, 247, 0.1); }
+        .alpha-update-card.glow-orange:hover .update-inner { border-color: rgba(249, 115, 22, 0.4); box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(249, 115, 22, 0.1); }
+
+        /* Icone Flutuante */
+        .update-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            transition: all 0.4s ease;
+        }
+        .alpha-update-card:hover .update-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* --- MOBILE MENU --- */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 360px;
+            height: 100vh;
+            background: rgba(5, 5, 5, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            transition: right 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        .mobile-menu.active { right: 0; }
+
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 9998;
+        }
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Efeito de subidinha nas redes sociais */
+.social-link {
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    transform: translateY(-3px);
+}
+    </style>
+</head>
+
+<body class="text-white">
+
+    <div id="discordModalOverlay" class="fixed inset-0 bg-black/80 z-[10000] hidden opacity-0 transition-opacity duration-300 flex items-center justify-center px-4" onclick="if(event.target === this) closeDiscordModal()">
+        <div id="discordModal" class="bg-[#050505] border border-[#00a2ff]/30 rounded-2xl p-8 max-w-md w-full transform scale-95 transition-transform duration-300 relative shadow-[0_0_40px_rgba(0,162,255,0.2)] text-center">
+            
+            <button onclick="closeDiscordModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="w-16 h-16 bg-[#00a2ff]/10 rounded-full flex items-center justify-center mx-auto mb-5 border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.2)]">
+                <i class="fas fa-tools text-2xl text-[#00a2ff]"></i>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-white mb-3">Servidor em Manutenção</h3>
+            <p class="text-gray-400 mb-8 text-sm leading-relaxed">
+                Estamos preparando um espaço incrível e cheio de novidades para a comunidade ALPHA CORE. O nosso servidor no Discord estará disponível muito em breve!
+            </p>
+            
+            <button onclick="closeDiscordModal()" class="w-full bg-[#00a2ff] text-white py-3 rounded-lg font-bold hover:bg-[#0088cc] transition shadow-[0_0_15px_rgba(0,162,255,0.3)]">
+                Entendi
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold">Menu</h2>
+                <button onclick="closeMobileMenu()" class="w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white hover:text-black transition border border-white/10">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="space-y-2 mb-6">
+               <nav id="main-nav" class="flex gap-4 py-3 scrollbar-hide overflow-x-auto items-center">
+    <button onclick="window.location.href='index.html'" data-page="index.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Início</button>
+    
+    <button onclick="window.location.href='fornecedores.html'" data-page="fornecedores.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Fornecedores</button>
+    
+    <button onclick="window.location.href='fornecedores.html#faq-alfandega'" data-page="faq" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">FAQ Alfândega</button>
+    
+    <button onclick="window.location.href='fretes.html'" data-page="fretes.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Guia Fretes</button>
+    
+    <button onclick="window.location.href='dicas.html'" data-page="dicas.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Dicas</button>
+    
+    <button onclick="window.location.href='ferramentas1.html'" data-page="ferramentas1.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Ferramentas</button>
+    
+    <button onclick="window.location.href='atualizacoes.html'" data-page="atualizacoes.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Atualizações</button>
+    
+    <button onclick="window.location.href='anti-golpe.html'" data-page="anti-golpe.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Anti-Golpe</button>
+    
+    <button onclick="window.location.href='aviso-geral.html'" data-page="aviso-geral.html" class="nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition">Aviso Legal</button>
+</nav>
+            </div>
+
+            <div class="border-t border-white/10 pt-6">
+                <h3 class="text-sm font-bold mb-4 text-gray-400">SIGA-NOS</h3>
+                <div class="grid grid-cols-5 gap-3">
+                    <a href="#" onclick="openDiscordModal(event)" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-discord text-xl text-white"></i>
+                    </a>
+                    <a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-whatsapp text-xl text-white"></i>
+                    </a>
+                    <a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-instagram text-xl text-white"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@joaocamaraa?_r=1&_t=ZS-94FwFhMnD6q" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-tiktok text-xl text-white"></i>
+                    </a>
+                    <a href="https://youtube.com/@joaocamaraa?feature=shared" target="_blank" class="social-link w-full aspect-square flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-youtube text-xl text-white"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/90 border-b border-white/10">
+        <div class="container mx-auto px-4 py-3 lg:py-4">
+            <div class="flex items-center justify-between gap-3 lg:gap-6">
+
+              <a href="../" class="flex items-center gap-2 lg:gap-3 flex-shrink-0 hover:opacity-90 transition">
+    <img src="./image/logo-alphacore.jpg" alt="Alpha Core Logo" class="w-10 h-10 object-cover">
+    <span class="text-lg lg:text-xl font-bold tracking-wider">ALPHA <span class="text-[#00a2ff]">CORE</span></span>
+</a>
+
+                <div class="hidden lg:flex items-center gap-3">
+                    <a href="#" onclick="openDiscordModal(event)" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-discord text-white"></i>
+                    </a>
+                    <a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-whatsapp text-white"></i>
+                    </a>
+                    <a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-instagram text-white"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@joaocamaraa?_r=1&_t=ZS-94FwFhMnD6q" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-tiktok text-white"></i>
+                    </a>
+                    <a href="https://youtube.com/@joaocamaraa?feature=shared" target="_blank" class="social-link w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 transition border border-white/10">
+                        <i class="fab fa-youtube text-white"></i>
+                    </a>
+                </div>
+
+                <button onclick="openMobileMenu()" class="lg:hidden p-2 rounded-lg bg-white/5 flex-shrink-0 hover:bg-white/10 transition border border-white/10">
+                    <svg class="w-6 h-6 text-[#00a2ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="hidden lg:block border-t border-white/5">
+            <div class="container mx-auto px-4 relative z-40">
+                <nav class="flex gap-1 py-2 scrollbar-hide relative" style="overflow: visible !important;">
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../index.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            Início
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../fornecedores.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            Fornecedores
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../fornecedores.html#faq-alfandega'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            FAQ Alfândega
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../fretes.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            Guia de Fretes
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../dicas.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            Dicas
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                         <button onclick="window.location.href='../ferramentas1.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            Ferramentas
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../atualizacoes.html'" class="px-6 py-2 rounded-lg text-sm font-bold whitespace-nowrap bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_10px_rgba(0,162,255,0.1)] transition">
+                            Atualizações
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../anti-golpe.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            Guia Anti-Golpe
+                        </button>
+                    </div>
+                    <div class="category-btn relative">
+                        <button onclick="window.location.href='../aviso-legal.html'" class="px-6 py-2 rounded-lg text-sm font-medium whitespace-nowrap hover:bg-white/10 transition text-gray-400 hover:text-white">
+                            Aviso Legal
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="pt-40 lg:pt-52 px-4 pb-24">
+        <div class="container mx-auto max-w-5xl">
+            
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-3 bg-[#00a2ff]/10 border border-[#00a2ff]/30 px-6 py-3 rounded-full mb-8 shadow-[0_0_30px_rgba(0,162,255,0.15)]">
+                    <i class="fas fa-satellite-dish text-[#00a2ff] animate-pulse text-xl"></i>
+                    <span class="text-sm font-black uppercase tracking-[0.3em] text-[#00a2ff]">Radar de Atualizações</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter uppercase text-white drop-shadow-2xl">
+                    Central de <span class="text-[#00a2ff]">Notícias</span>
+                </h1>
+                <p class="text-lg lg:text-xl text-gray-400 font-medium max-w-3xl mx-auto leading-relaxed italic">
+                    Fique por dentro das últimas mudanças em logística, fornecedores, tarifas e atualizações do sistema Alpha Core.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 mt-12">
+                    <button onclick="filtrarRadar('todas')" id="btn-todas" class="filter-btn active-filter">
+                        <i class="fas fa-layer-group mr-2"></i> Visão Geral
+                    </button>
+                    <button onclick="filtrarRadar('mercado')" id="btn-mercado" class="filter-btn">
+                        <i class="fas fa-globe mr-2"></i> Mercado & Alfândega
+                    </button>
+                    <button onclick="filtrarRadar('sistema')" id="btn-sistema" class="filter-btn">
+                        <i class="fas fa-terminal mr-2"></i> Alpha Core System
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+
+                <div class="alpha-update-card glow-blue category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-[#00a2ff]/10 border border-[#00a2ff]/30 text-[#00a2ff] shadow-[0_0_15px_rgba(0,162,255,0.2)]">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-[#00a2ff]/20 text-[#00a2ff] border border-[#00a2ff]/30 px-3 py-1.5 rounded-lg">Fevereiro 2026</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-17">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Escassez global de chips afeta preços de eletrônicos</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                Fabricantes chineses reportam aumento de 15-25% nos preços de smartphones, notebooks e componentes eletrônicos devido à escassez global de semicondutores nas fábricas.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-chart-bar text-[#00a2ff] mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Impacto Tático:</strong> iPhones e Androids estão até 20% mais caros. Considere focar em comprar modelos de gerações anteriores ou aguardar a estabilização do mercado.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-purple category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-purple-500/10 border border-purple-500/30 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                            <i class="fas fa-ship"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-purple-500/20 text-purple-400 border border-purple-500/30 px-3 py-1.5 rounded-lg">Fevereiro 2026</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-16">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Latam expande rotas marítimas "Canais Dourados"</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                Nova rota marítima otimizada entre Brasil e China com frota expandida. Promessa de prazo fixado em 25-35 dias com custos extremamente competitivos para cargas pesadas.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-anchor text-purple-400 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Realidade Logística:</strong> O frete aéreo padrão continua levando 12-23 dias. Esta nova rota marítima oferece o melhor custo-benefício apenas para volumes corporativos ou muito pesados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-red category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-red-500/10 border border-red-500/30 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-red-500/20 text-red-500 border border-red-500/30 px-3 py-1.5 rounded-lg">Fevereiro 2026</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-15">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Nike e Adidas reduzem produção na China</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                Grandes marcas aceleram a fuga de chão de fábrica na China (meta de menos de 10% até maio/2026) devido a novas rodadas de tarifas governamentais. Produção sendo migrada emergencialmente para Vietnã e Índia.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-exclamation-circle text-red-500 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Alerta de Impacto:</strong> Forte tendência de aumento de preços no mercado paralelo chinês. Efetue aquisições agora antes dos repasses logísticos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-orange category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-orange-500/10 border border-orange-500/30 text-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)]">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-orange-500/20 text-orange-500 border border-orange-500/30 px-3 py-1.5 rounded-lg">Fevereiro 2026</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-14">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Alibaba proíbe venda de cigarros eletrônicos (Vapes)</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                A maior plataforma B2B removeu sumariamente todos os anúncios de produtos de fumo, adequando-se à nova regulamentação governamental chinesa mais rígida. Vendedores confiáveis estão migrando para plataformas independentes.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-shield-alt text-orange-500 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Aviso de Segurança:</strong> Cuidado extremo ao procurar esses itens em plataformas menores. O risco de apreensão por falsificação ou falha de bateria triplicou.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-blue category-sistema">
+                    <div class="update-inner">
+                        <div class="update-icon bg-[#00a2ff]/10 border border-[#00a2ff]/30 text-[#00a2ff] shadow-[0_0_15px_rgba(0,162,255,0.2)]">
+                            <i class="fas fa-terminal"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-[#00a2ff]/20 text-[#00a2ff] border border-[#00a2ff]/30 px-3 py-1.5 rounded-lg">Alpha Core Update</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-17">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Deploy de novos Módulos de Importação</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                Atualização estrutural do sistema. Adicionamos 3 novas ferramentas táticas: Checklist de Quality Check (QC), Simulador Visual de Timeline de Importação e um Conversor de Câmbio de alta precisão.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-code-branch text-[#00a2ff] mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Patch Notes:</strong> Módulos acessíveis via aba "Ferramentas" com layout Anti-Jitter e cálculos automáticos otimizados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-red category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-red-500/10 border border-red-500/30 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-red-500/20 text-red-500 border border-red-500/30 px-3 py-1.5 rounded-lg">Dezembro 2025</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2025-12-01">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">RFB: Aumento da Fiscalização e Validação CPF/CNPJ</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                A Receita Federal do Brasil ativou um novo algoritmo de validação cruzada. Pessoas físicas recebendo mais de 5 encomendas internacionais por mês estão caindo na malha fina por suspeita de "destinação comercial".
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-user-shield text-red-500 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Diretriz Operacional:</strong> Mantenha a frequência em no máximo 3 a 4 caixas por mês por CPF. Se o objetivo é revenda, a formalização via CNPJ torna-se mandatória.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-green category-sistema">
+                    <div class="update-inner">
+                        <div class="update-icon bg-green-500/10 border border-green-500/30 text-green-500 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-green-500/20 text-green-500 border border-green-500/30 px-3 py-1.5 rounded-lg">Alpha Core Update</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-17">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Simulador de Tributos (Update 2026)</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                A calculadora oficial do sistema foi reescrita para incluir o cálculo automático do novo formato de ICMS nacionalizado e as regras de Imposto de Importação para diferentes faixas de valor declaradas.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Status:</strong> Módulo matemático 100% calibrado e operacional.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-orange category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-orange-500/10 border border-orange-500/30 text-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.2)]">
+                            <i class="fas fa-calendar-times"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-orange-500/20 text-orange-400 border border-orange-500/30 px-3 py-1.5 rounded-lg">Fevereiro 2026</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-12">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Gargalo Logístico: Feriado do Ano Novo Chinês</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                Consequência direta das festividades asiáticas (14/02 a 20/02): O prazo médio global de postagem e despacho aéreo foi acrescido em 7 a 15 dias úteis devido ao congelamento da malha de transporte interna da China.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-clock text-orange-400 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Previsão:</strong> Atrasos persistirão para pacotes submetidos após 20/01. Normalização do fluxo projetada apenas para a primeira semana de Março.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="alpha-update-card glow-green category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-green-500/10 border border-green-500/30 text-green-500 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                            <i class="fas fa-plane-arrival"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-green-500/20 text-green-500 border border-green-500/30 px-3 py-1.5 rounded-lg">Janeiro 2026</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-01-10">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Ativação da rota aérea HOO-BR-LINE-NPD</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                A plataforma de agenciamento Hoobuy inaugurou uma linha expressa direcionada ao Brasil. O trajeto promete reduzir o "Transit Time" para uma margem tática de 12 a 18 dias. Foco principal em caixas abaixo de 3KG.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-tachometer-alt text-green-500 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Vantagem Operacional:</strong> Demonstrou ser 20% mais rápida que a clássica "BR-PADRÃO-F", custando marginalmente (15%) a mais no frete.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-purple category-sistema">
+                    <div class="update-inner">
+                        <div class="update-icon bg-purple-500/10 border border-purple-500/30 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                            <i class="fas fa-ruler-combined"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-purple-500/20 text-purple-400 border border-purple-500/30 px-3 py-1.5 rounded-lg">Alpha Core Update</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2026-02-15">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Calibragem da Tabela de Medidas Asiáticas</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                Os bancos de dados de conversão de tamanhos sofreram um wipe and reload. As métricas de tênis (EU/CN para BR) foram ajustadas para maior fidelidade, e incluímos um sistema avançado de numeração para anéis.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-check-double text-purple-400 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Design:</strong> O site principal também recebeu uma reformulação de interface (UI) para dispositivos móveis, ativando menus em vidro temperado (Glassmorphism).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="alpha-update-card glow-blue category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-[#00a2ff]/10 border border-[#00a2ff]/30 text-[#00a2ff] shadow-[0_0_15px_rgba(0,162,255,0.2)]">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-[#00a2ff]/20 text-[#00a2ff] border border-[#00a2ff]/30 px-3 py-1.5 rounded-lg">Novembro 2025</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2025-11-01">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Aduana: Declaração Minuciosa para Eletrônicos</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                Fiscalização no Aeroporto de Curitiba passou a exigir discriminação de marca, modelo e especificações de hardware nas Invoices para smartphones, tablets e drones.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-battery-empty text-[#00a2ff] mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Estratégia:</strong> O risco de retenção por baterias de lítio subiu. Sempre solicite ao seu agente a remoção de baterias extras ou envie através de linhas "Eletronic/Battery Specific".</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alpha-update-card glow-red category-mercado">
+                    <div class="update-inner">
+                        <div class="update-icon bg-red-500/10 border border-red-500/30 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <i class="fas fa-plane-slash"></i>
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <span class="text-[10px] font-black uppercase tracking-widest bg-red-500/20 text-red-500 border border-red-500/30 px-3 py-1.5 rounded-lg">Outubro 2025</span>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest tempo-noticia" data-date="2025-10-25">Calculando...</span>
+                            </div>
+                            <h3 class="font-black text-xl lg:text-2xl mb-3 text-white tracking-tight uppercase">Suspensão de Operações da DHL Triangle</h3>
+                            <p class="text-gray-400 text-sm md:text-base mb-4 leading-relaxed font-medium">
+                                A modalidade de frete triangular expresso (China -> Europa -> Brasil) via DHL foi suspensa por tempo indeterminado devido ao aumento de bloqueios aduaneiros europeus em mercadorias de marca.
+                            </p>
+                            <div class="bg-[#111] border border-white/5 rounded-xl p-4 text-sm text-gray-300 flex items-start gap-3">
+                                <i class="fas fa-exchange-alt text-red-500 mt-1"></i>
+                                <p><strong class="text-white uppercase tracking-wider text-xs mr-1">Consequência:</strong> O "Hack" de receber produtos em 7 dias caiu. Envios via E-EMS voltaram a ser a rota expressa mais viável (prazo atualizado: 15-30 dias).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-20 bg-[#080808] rounded-[2rem] border border-[#00a2ff]/20 p-10 lg:p-14 text-center relative overflow-hidden group hover:border-[#00a2ff]/40 transition duration-700 shadow-2xl">
+                <div class="absolute -top-40 -left-40 w-[400px] h-[400px] bg-[#00a2ff]/10 rounded-full blur-[100px] pointer-events-none transition duration-1000 group-hover:bg-[#00a2ff]/20"></div>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <div class="w-20 h-20 bg-[#00a2ff]/10 rounded-2xl flex items-center justify-center mb-6 border border-[#00a2ff]/30 shadow-[0_0_20px_rgba(0,162,255,0.2)]">
+                        <i class="fas fa-satellite text-[#00a2ff] text-3xl animate-pulse"></i>
+                    </div>
+                    <h2 class="text-3xl lg:text-4xl font-black uppercase tracking-tight mb-4 text-white">
+                        Sincronize com a Base
+                    </h2>
+                    <p class="text-gray-400 text-lg max-w-xl mx-auto mb-10">
+                        Receba alertas críticos de fiscalização, cupons de desconto de agentes e rotas táticas de frete diretamente no seu celular.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-5 justify-center w-full max-w-2xl">
+                        <a href="https://discord.gg/gNerXPt6vU" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-xl font-black uppercase tracking-widest text-xs transition flex items-center justify-center gap-3 shadow-[0_10px_20px_rgba(88,101,242,0.3)] hover:-translate-y-1">
+                            <i class="fab fa-discord text-lg"></i> Base Discord
+                        </a>
+                        <a href="https://chat.whatsapp.com/L0RC6Mns4kf1VBBpmy59wu" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-[#25D366] hover:bg-[#1DA851] text-white rounded-xl font-black uppercase tracking-widest text-xs transition flex items-center justify-center gap-3 shadow-[0_10px_20px_rgba(37,211,102,0.3)] hover:-translate-y-1">
+                            <i class="fab fa-whatsapp text-lg"></i> Radar WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+   <footer class="bg-black border-t border-white/10">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Links Rápidos</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="fornecedores.html" class="hover:text-white transition">Fornecedores</a></li>
+                        <li><a href="fretes.html" class="hover:text-white transition">Guia de Fretes</a></li>
+                        <li><a href="dicas.html" class="hover:text-white transition">Dicas</a></li>
+                        <li><a href="atualizacoes.html" class="hover:text-white transition">Atualizações</a></li>
+                        <li><a href="anti-golpe.html" class="hover:text-white transition">Guia Anti-Golpe</a></li>
+                        <li><a href="aviso-legal.html" class="hover:text-white transition">Aviso Legal</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Plataformas</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="https://hoobuy.com?utm_source=website&utm_medium=ambassador&utm_campaign=linksharing&inviteCode=AXn3n7JE" target="_blank" class="hover:text-white transition">Hoobuy</a></li>
+                        <li><a href="https://www.taobao.com" target="_blank" class="hover:text-white transition">Taobao</a></li>
+                        <li><a href="https://www.1688.com" target="_blank" class="hover:text-white transition">1688</a></li>
+                        <li><a href="https://www.xianyu.com" target="_blank" class="hover:text-white transition">Xianyu</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Contato</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" onclick="openDiscordModal(event)" class="hover:text-white transition">Discord</a></li>
+                        <li><a href="https://chat.whatsapp.com/K1WlVOVTzqIADzMhWFX6Jv?mode=gi_t" target="_blank" class="hover:text-white transition">WhatsApp</a></li>
+                        <li><a href="https://www.instagram.com/joao.camaraa?igsh=aWxpMDAxYWFvOHRq&utm_source=qr" target="_blank" class="hover:text-white transition">Instagram</a></li>
+                        <li><a href="https://www.tiktok.com/@joaocamaraa?_r=1&_t=ZS-94FwFhMnD6q" target="_blank" class="hover:text-white transition">TikTok</a></li>
+                        <li><a href="https://youtube.com/@joaocamaraa?feature=shared" target="_blank" class="hover:text-white transition">YouTube</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Legal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="aviso-legal.html" class="hover:text-white transition">Aviso Legal</a></li>
+                        <li><a href="aviso-legal.html" class="hover:text-white transition">Isenção de Responsabilidade</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-8 pt-8 text-center text-gray-500">
+                <p class="mb-2">© 2026 ALPHA CORE. Todos os direitos reservados.</p>
+                <p class="text-xs text-gray-600 italic">Guia informativo independente. Responsabilidade exclusiva do usuário. Consulte leis e profissionais.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    // 1. Pega o nome do arquivo atual (ex: aviso-geral.html)
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(link => {
+        const pageTarget = link.getAttribute("data-page");
+
+        // 2. Se o botão for o da página atual, aplica o efeito Neon
+        if (currentPage === pageTarget) {
+            link.className = "nav-link px-6 py-2.5 rounded-xl text-[11px] font-black uppercase bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.15)] transition";
+        } 
+        // 3. Caso especial para a FAQ que fica dentro de fornecedores
+        else if (window.location.hash === "#faq-alfandega" && pageTarget === "faq") {
+             link.className = "nav-link px-6 py-2.5 rounded-xl text-[11px] font-black uppercase bg-[#00a2ff]/10 text-[#00a2ff] border border-[#00a2ff]/30 shadow-[0_0_15px_rgba(0,162,255,0.15)] transition";
+             // Remove o destaque do botão "Fornecedores" comum se estiver na FAQ
+             document.querySelector('[data-page="fornecedores.html"]').className = "nav-link px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition";
+        }
+    });
+});
+        // Função de Abertura do Menu Lateral (Mobile)
+        function openMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+            document.getElementById('mobileOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Função de Fechamento do Menu Lateral (Mobile)
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+            document.getElementById('mobileOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // --- SISTEMA DE CÁLCULO DE DATAS TÁTICAS ---
+        function calcularDiasDesde(dataNoticiaStr) {
+            const hoje = new Date();
+            // Ajuste do fuso e da string para forçar a data correta
+            const dataNoticiaObj = new Date(dataNoticiaStr + "T00:00:00");
+            
+            // Corrige qualquer inconsistência de horário limpando horas
+            hoje.setHours(0,0,0,0);
+            dataNoticiaObj.setHours(0,0,0,0);
+
+            const diffMs = Math.abs(hoje - dataNoticiaObj);
+            const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffDias === 0) return 'Identificado Hoje';
+            if (diffDias === 1) return 'Alerta de Ontem';
+            if (diffDias < 7) return `Sinal de ${diffDias} dias atrás`;
+            if (diffDias < 30) return `Log de ${Math.floor(diffDias / 7)} semana(s)`;
+            if (diffDias < 365) return `Arquivo de ${Math.floor(diffDias / 30)} mês(es)`;
+            return `Arquivo Base (${Math.floor(diffDias / 365)} anos)`;
+        }
+
+        // Inicializa o Relógio de Dias ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            const spansTempo = document.querySelectorAll('.tempo-noticia');
+            
+            spansTempo.forEach(span => {
+                const dataNoHtml = span.getAttribute('data-date'); // Ex: "2026-02-15"
+                if (dataNoHtml) {
+                    span.textContent = calcularDiasDesde(dataNoHtml);
+                }
+            });
+        });
+
+        // --- SISTEMA DE FILTRO DE MÓDULOS (ABAS) ---
+        function filtrarRadar(tipo) {
+            // Arrays de elementos HTML
+            const cardsMercado = document.querySelectorAll('.category-mercado');
+            const cardsSistema = document.querySelectorAll('.category-sistema');
+            
+            // Botões de Interface
+            const btnTodas = document.getElementById('btn-todas');
+            const btnMercado = document.getElementById('btn-mercado');
+            const btnSistema = document.getElementById('btn-sistema');
+
+            // Resetar estilos dos botões Alpha para o estado inativo
+            const cssInativo = 'filter-btn';
+            btnTodas.className = cssInativo;
+            btnMercado.className = cssInativo;
+            btnSistema.className = cssInativo;
+
+            // Executar lógica do Display = NONE/BLOCK
+            if (tipo === 'todas') {
+                btnTodas.className = 'filter-btn active-filter';
+                cardsMercado.forEach(c => c.style.display = 'block');
+                cardsSistema.forEach(c => c.style.display = 'block');
+            } 
+            else if (tipo === 'mercado') {
+                btnMercado.className = 'filter-btn active-filter';
+                cardsMercado.forEach(c => c.style.display = 'block');
+                cardsSistema.forEach(c => c.style.display = 'none');
+            } 
+            else if (tipo === 'sistema') {
+                btnSistema.className = 'filter-btn active-filter';
+                cardsMercado.forEach(c => c.style.display = 'none');
+                cardsSistema.forEach(c => c.style.display = 'block');
+            }
+        }
+    </script>
+
+    <script>
+        window.va = window.va || function() {
+            (window.vaq = window.vaq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
